@@ -27,6 +27,7 @@ import org.terasology.logic.delay.DelayManager;
 import org.terasology.logic.delay.PeriodicActionTriggeredEvent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.world.WorldProvider;
@@ -144,8 +145,25 @@ public class MinerBuildSystem extends BaseComponentSystem {
         }
     }
 
+    private Vector3i getRandomDirection() {
+        switch (random.nextInt(6)) {
+            case 0:
+                return Vector3i.up();
+            case 1:
+                return Vector3i.down();
+            case 2:
+                return Vector3i.north();
+            case 3:
+                return Vector3i.west();
+            case 4:
+                return Vector3i.east();
+            case 5:
+                return Vector3i.south();
+        }
+    }
+
     private void moveMiner(Miner miner) {
-        miner.pos.add(random.nextInt(-1, 1), random.nextInt(-1, 1), random.nextInt(-1, 1));
+        miner.pos.add(getRandomDirection());
     }
 
     private void mineBlock(Miner miner) {
