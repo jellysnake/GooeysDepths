@@ -45,7 +45,7 @@ public class MinerBuildSystem extends BaseComponentSystem {
     /**
      * Number of empty cells around the miner to kill it
      */
-    private static final int KILL_NUM = 19;
+    private static final int KILL_NUM = 23;
     /**
      * Chance to spawn in a new miner each frame
      */
@@ -82,7 +82,7 @@ public class MinerBuildSystem extends BaseComponentSystem {
     @Override
     public void postBegin() {
         airBlock = blockManager.getBlock(BlockManager.AIR_ID);
-        miners.add(new Miner(0, 0, 0));
+        miners.add(new Miner(1, -1, 1));
 
         EntityBuilder entityBuilder = entityManager.newBuilder();
         entityBuilder.setPersistent(true);
@@ -99,7 +99,7 @@ public class MinerBuildSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onPlayerSpawned(OnPlayerSpawnedEvent event, EntityRef entity) {
-        delayManager.addPeriodicAction(entity, UPDATE_ID, 0, UPDATE_RATE);
+        //delayManager.addPeriodicAction(entity, UPDATE_ID, 0, UPDATE_RATE);
     }
 
 
@@ -185,6 +185,7 @@ public class MinerBuildSystem extends BaseComponentSystem {
             processMiners();
             if (miners.size() == 0) {
                 delayManager.cancelPeriodicAction(entity, UPDATE_ID);
+                logger.info("Finished Mining");
             }
         }
     }
