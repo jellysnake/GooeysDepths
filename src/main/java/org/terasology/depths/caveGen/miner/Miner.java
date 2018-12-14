@@ -25,7 +25,7 @@ public class Miner {
     }
 
     public Miner(Miner clone) {
-        pos = clone.pos;
+        pos = new Vector3i(clone.pos);
     }
 
     public Miner(int x, int y, int z) {
