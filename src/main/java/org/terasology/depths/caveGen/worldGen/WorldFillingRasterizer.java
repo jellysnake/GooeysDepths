@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.depths.caveGen;
+package org.terasology.depths.caveGen.worldGen;
 
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
