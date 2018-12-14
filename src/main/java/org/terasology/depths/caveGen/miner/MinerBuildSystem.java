@@ -17,6 +17,8 @@ package org.terasology.depths.caveGen.miner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.entitySystem.entity.EntityBuilder;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
@@ -24,6 +26,7 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.delay.DelayManager;
 import org.terasology.logic.delay.PeriodicActionTriggeredEvent;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.registry.In;
 import org.terasology.utilities.random.FastRandom;
 import org.terasology.world.WorldProvider;
@@ -54,7 +57,7 @@ public class MinerBuildSystem extends BaseComponentSystem {
     /**
      * How often to tick through one iteration of the miners
      */
-    private static final int UPDATE_RATE = 1000;
+    private static final int UPDATE_RATE = 2000;
     private static final String UPDATE_ID = "depthsMinerUpdate";
 
     private final FastRandom random = new FastRandom();
@@ -72,13 +75,32 @@ public class MinerBuildSystem extends BaseComponentSystem {
     private BlockManager blockManager;
     @In
     private LocalPlayer localPlayer;
+    @In
+    private EntityManager entityManager;
 
     @Override
     public void postBegin() {
         airBlock = blockManager.getBlock(BlockManager.AIR_ID);
-        delayManager.addPeriodicAction(localPlayer.getClientEntity(), UPDATE_ID, 0, UPDATE_RATE);
         miners.add(new Miner(0, 0, 0));
+
+        EntityBuilder entityBuilder = entityManager.newBuilder();
+        entityBuilder.setPersistent(true);
+        EntityRef entity = entityBuilder.build();
+        delayManager.addPeriodicAction(entity, UPDATE_ID, 0, UPDATE_RATE);
     }
+
+    /**
+     * Starts the periodic action with the given entity once the world has loaded.
+     * <p>
+     * Called when the player is first spawned
+     *
+     * @see OnPlayerSpawnedEvent
+     */
+    @ReceiveEvent
+    public void onPlayerSpawned(OnPlayerSpawnedEvent event, EntityRef entity) {
+        delayManager.addPeriodicAction(entity, UPDATE_ID, 0, UPDATE_RATE);
+    }
+
 
     private void processMiners() {
         logger.info("Processing " + miners.size() + " miners.");
