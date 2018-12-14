@@ -159,6 +159,8 @@ public class MinerBuildSystem extends BaseComponentSystem {
                 return Vector3i.east();
             case 5:
                 return Vector3i.south();
+            default:
+                return Vector3i.zero();
         }
     }
 
@@ -179,6 +181,11 @@ public class MinerBuildSystem extends BaseComponentSystem {
      */
     @ReceiveEvent
     public void onPeriodicActionTriggered(PeriodicActionTriggeredEvent event, EntityRef entity) {
-        processMiners();
+        if (event.getActionId().equals(UPDATE_ID)) {
+            processMiners();
+            if (miners.size() == 0) {
+                delayManager.cancelPeriodicAction(entity, UPDATE_ID);
+            }
+        }
     }
 }
