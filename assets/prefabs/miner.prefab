@@ -1,0 +1,10 @@
+{
+  "Location": {
+    "scale": 1
+  },
+  "Mesh": {
+    "mesh": "GooeysDepths:Sphere",
+    "material": "GooeysDepths:Sphere",
+    "translucent": true
+  }
+}
