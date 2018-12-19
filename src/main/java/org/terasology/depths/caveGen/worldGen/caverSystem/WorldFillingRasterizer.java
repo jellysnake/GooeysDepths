@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.depths.caveGen.worldGen;
+package org.terasology.depths.caveGen.worldGen.caverSystem;
 
+import org.terasology.depths.caveGen.worldGen.caverSystem.CaveSystemFacet;
+import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
@@ -37,24 +39,12 @@ public class WorldFillingRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-        /* Fill it all in */
-        for (int x = 0; x < chunk.getChunkSizeX(); ++x) {
-            for (int z = 0; z < chunk.getChunkSizeZ(); ++z) {
-                for (int y = 0; y < chunk.getChunkSizeY(); ++y) {
-                    chunk.setBlock(x, y, z, dirt);
-                }
-            }
-        }
-
-        /* We want to leave a space for the player */
-        Vector3i zero = new Vector3i(0, 0, 0);
-        if (chunkRegion.getRegion().encompasses(zero)) {
-            for (int x = 0; x < 3; ++x) {
-                for (int z = 0; z < 3; ++z) {
-                    for (int y = 0; y < 3; ++y) {
-                        chunk.setBlock(x, y, z, air);
-                    }
-                }
+        CaveSystemFacet caveSystemFacet = chunkRegion.getFacet(CaveSystemFacet.class);
+        for (Vector3i position : chunkRegion.getRegion()) {
+            if (caveSystemFacet.getWorld(position.x, position.y, position.z)) {
+                chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+            } else {
+                chunk.setBlock(ChunkMath.calcBlockPos(position), air);
             }
         }
     }
