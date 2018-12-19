@@ -1,0 +1,14 @@
+{
+  "Light": {
+    "simulateFading": false
+  },
+  "EntityInfo": {
+    "persisted": true,
+    "alwaysRelevant": true
+  },
+  "Mesh": {
+    "mesh": "GooeysDepths:Sphere",
+    "material": "GooeysDepths:Sphere",
+    "translucent": true
+  }
+}
