@@ -13,38 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.depths.caveGen.worldGen.lighting;
+package org.terasology.depths.caveGen.worldGen.caverSystem;
 
 import org.terasology.math.Region3i;
-import org.terasology.math.geom.Vector3f;
+import org.terasology.math.Side;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.utilities.procedural.WhiteNoise;
 import org.terasology.world.generation.Border3D;
+import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
+import org.terasology.world.generation.Requires;
 
-@Produces(LightingFacet.class)
-public class LightingProvider implements FacetProvider {
-
-    private Noise noise;
-
-    @Override
-    public void setSeed(long seed) {
-        noise = new SubSampledNoise(new WhiteNoise(seed), new Vector3f(0.1f, 0.1f, 0.1f), 1);
-    }
-
+@Produces(FloraFacet.class)
+@Requires(
+        @Facet(GrassFacet.class))
+public class FloraProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
-        Border3D border = region.getBorderForFacet(LightingFacet.class);
-        LightingFacet facet = new LightingFacet(region.getRegion(), border);
+        CaveSystemFacet caveFacet = region.getRegionFacet(CaveSystemFacet.class);
+
+        Border3D border = region.getBorderForFacet(FloraFacet.class);
+        FloraFacet facet = new FloraFacet(region.getRegion(), border);
         Region3i processRegion = facet.getWorldRegion();
+
         for (Vector3i position : processRegion) {
-            facet.setWorld(position, noise.noise(position.x(), position.y(), position.z()) > 0.93);
+            if (!caveFacet.get(position) && caveFacet.get(position.add(Side.BOTTOM.getVector3i()))) {
+
+            }
         }
-        region.setRegionFacet(LightingFacet.class, facet);
     }
 }

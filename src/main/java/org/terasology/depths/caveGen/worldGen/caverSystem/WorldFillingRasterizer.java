@@ -15,7 +15,6 @@
  */
 package org.terasology.depths.caveGen.worldGen.caverSystem;
 
-import org.terasology.depths.caveGen.worldGen.caverSystem.CaveSystemFacet;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -28,21 +27,29 @@ import org.terasology.world.generation.WorldRasterizer;
 public class WorldFillingRasterizer implements WorldRasterizer {
 
     private Block dirt;
+    private Block grass;
     private Block air;
 
     @Override
     public void initialize() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        dirt = blockManager.getBlock("Core:dirt");
+        dirt = blockManager.getBlock("Core:Dirt");
+        grass = blockManager.getBlock("Core:Grass");
         air = blockManager.getBlock(BlockManager.AIR_ID);
     }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         CaveSystemFacet caveSystemFacet = chunkRegion.getFacet(CaveSystemFacet.class);
+        GrassFacet grassFacet = chunkRegion.getFacet(GrassFacet.class);
+
         for (Vector3i position : chunkRegion.getRegion()) {
-            if (caveSystemFacet.getWorld(position.x, position.y, position.z)) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+            if (caveSystemFacet.getWorld(position)) {
+                if (false) {
+                    chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+                } else {
+                    chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                }
             } else {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), air);
             }

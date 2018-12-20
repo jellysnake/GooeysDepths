@@ -18,29 +18,33 @@ package org.terasology.depths.caveGen.worldGen.lighting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.depths.caveGen.worldGen.caverSystem.CaveSystemFacet;
-import org.terasology.entitySystem.entity.EntityStore;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.utilities.Assets;
-import org.terasology.world.generation.EntityBuffer;
-import org.terasology.world.generation.EntityProvider;
+import org.terasology.registry.CoreRegistry;
+import org.terasology.world.block.Block;
+import org.terasology.world.block.BlockManager;
+import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
+import org.terasology.world.generation.WorldRasterizer;
 
-public class LightingRasterizer implements EntityProvider {
+public class LightingRasterizer implements WorldRasterizer {
     private static final Logger logger = LoggerFactory.getLogger(LightingRasterizer.class);
 
+    private Block block;
+
     @Override
-    public void process(Region region, EntityBuffer buffer) {
-        LightingFacet lightingFacet = region.getFacet(LightingFacet.class);
-        CaveSystemFacet solidFacet = region.getFacet(CaveSystemFacet.class);
-        for (Vector3i position : region.getRegion()) {
-            if (lightingFacet.getWorld(position.x, position.y, position.z)
-                    && !solidFacet.getWorld(position.x, position.y, position.z)) {
-                EntityStore store = new EntityStore(Assets.getPrefab("GooeysDepths:WorldLighting").orElse(null));
-                LocationComponent component = new LocationComponent();
-                component.setWorldPosition(position.toVector3f());
-                store.addComponent(component);
-                buffer.enqueue(store);
+    public void initialize() {
+        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        block = blockManager.getBlock("GooeysDepths:GlowingBlock");
+    }
+
+    @Override
+    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+        CaveSystemFacet caveSystemFacet = chunkRegion.getFacet(CaveSystemFacet.class);
+        LightingFacet lightingFacet = chunkRegion.getFacet(LightingFacet.class);
+        for (Vector3i position : chunkRegion.getRegion()) {
+            if (caveSystemFacet.getWorld(position) && lightingFacet.getWorld(position)) {
+                chunk.setBlock(ChunkMath.calcBlockPos(position), block);
             }
         }
     }

@@ -1,0 +1,9 @@
+{
+  "luminance": 15,
+  "tile":"GlowingGrass",
+  "tiles": {
+    "sides": "GlowingGrass",
+    "top":"GlowingTop",
+    "bottom": "dirt"
+  }
+}
