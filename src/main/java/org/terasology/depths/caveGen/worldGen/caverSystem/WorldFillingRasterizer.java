@@ -28,11 +28,15 @@ public class WorldFillingRasterizer implements WorldRasterizer {
 
     private Block dirt;
     private Block grass;
+    private Block stone;
+    private Block hardstone;
     private Block air;
 
     @Override
     public void initialize() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        hardstone = blockManager.getBlock("Core:HardStone");
+        stone = blockManager.getBlock("Core:Stone");
         dirt = blockManager.getBlock("Core:Dirt");
         grass = blockManager.getBlock("Core:Grass");
         air = blockManager.getBlock(BlockManager.AIR_ID);
@@ -41,17 +45,25 @@ public class WorldFillingRasterizer implements WorldRasterizer {
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         CaveSystemFacet caveSystemFacet = chunkRegion.getFacet(CaveSystemFacet.class);
-        GrassFacet grassFacet = chunkRegion.getFacet(GrassFacet.class);
 
-        for (Vector3i position : chunkRegion.getRegion()) {
-            if (caveSystemFacet.getWorld(position)) {
-                if (false) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
-                } else {
+        for (Vector3i position : caveSystemFacet.getWorldRegion()) {
+            switch (caveSystemFacet.get(position)) {
+                case CaveSystemFacet.DIRT:
                     chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
-                }
-            } else {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), air);
+                    break;
+                case CaveSystemFacet.STONE:
+                    chunk.setBlock(ChunkMath.calcBlockPos(position), stone);
+                    break;
+                case CaveSystemFacet.HARDSTONE:
+                    chunk.setBlock(ChunkMath.calcBlockPos(position), hardstone);
+                    break;
+                case CaveSystemFacet.GRASS:
+                    chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+                    break;
+                case CaveSystemFacet.AIR:
+                default:
+                    chunk.setBlock(ChunkMath.calcBlockPos(position), air);
+                    break;
             }
         }
     }

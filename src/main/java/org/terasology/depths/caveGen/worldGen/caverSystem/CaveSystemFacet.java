@@ -19,7 +19,7 @@ import org.terasology.depths.caveGen.worldGen.BaseByteFacet3D;
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
 
-public class CaveDensityFacet extends BaseByteFacet3D {
+public class CaveSystemFacet extends BaseByteFacet3D {
     public static final byte AIR = 0;
     public static final byte DIRT = 1;
     public static final byte STONE = 2;
@@ -27,7 +27,7 @@ public class CaveDensityFacet extends BaseByteFacet3D {
     public static final byte GRASS = 4;
 
 
-    public CaveDensityFacet(Region3i targetRegion, Border3D border) {
+    public CaveSystemFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }
