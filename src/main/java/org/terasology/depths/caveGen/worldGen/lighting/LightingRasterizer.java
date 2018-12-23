@@ -30,12 +30,14 @@ import org.terasology.world.generation.WorldRasterizer;
 public class LightingRasterizer implements WorldRasterizer {
     private static final Logger logger = LoggerFactory.getLogger(LightingRasterizer.class);
 
-    private Block block;
+    private Block dirt;
+    private Block grass;
 
     @Override
     public void initialize() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        block = blockManager.getBlock("GooeysDepths:GlowingBlock");
+        dirt = blockManager.getBlock("GooeysDepths:GlowingBlock");
+        grass = blockManager.getBlock("GooeysDepths:GlowingGrass");
     }
 
     @Override
@@ -43,8 +45,16 @@ public class LightingRasterizer implements WorldRasterizer {
         CaveSystemFacet caveSystemFacet = chunkRegion.getFacet(CaveSystemFacet.class);
         LightingFacet lightingFacet = chunkRegion.getFacet(LightingFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
-            if (caveSystemFacet.getWorld(position) && lightingFacet.getWorld(position)) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), block);
+            if (lightingFacet.getWorld(position)) {
+                switch (caveSystemFacet.get(position)) {
+                    case CaveSystemFacet.GRASS:
+                        chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+                        break;
+                    case CaveSystemFacet.AIR:
+                        break;
+                    default:
+                        chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                }
             }
         }
     }
