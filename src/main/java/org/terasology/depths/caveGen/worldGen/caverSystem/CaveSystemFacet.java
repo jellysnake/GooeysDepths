@@ -15,12 +15,19 @@
  */
 package org.terasology.depths.caveGen.worldGen.caverSystem;
 
+import org.terasology.depths.caveGen.worldGen.BaseByteFacet3D;
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.BaseBooleanFieldFacet3D;
 
-public class CaveSystemFacet extends BaseBooleanFieldFacet3D {
-    public CaveSystemFacet(Region3i targetRegion, Border3D border) {
+public class CaveDensityFacet extends BaseByteFacet3D {
+    public static final byte AIR = 0;
+    public static final byte DIRT = 1;
+    public static final byte STONE = 2;
+    public static final byte HARDSTONE = 3;
+    public static final byte GRASS = 4;
+
+
+    public CaveDensityFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }
