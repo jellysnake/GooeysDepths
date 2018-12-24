@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.depths.caveGen.worldGen.caverSystem;
+package org.terasology.depths.caveGen.worldGen.flora;
 
+import org.terasology.depths.caveGen.worldGen.caverSystem.CaveSystemFacet;
 import org.terasology.math.Region3i;
-import org.terasology.math.Side;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;
@@ -27,7 +27,7 @@ import org.terasology.world.generation.Requires;
 
 @Produces(FloraFacet.class)
 @Requires(
-        @Facet(GrassFacet.class))
+        @Facet(CaveSystemFacet.class))
 public class FloraProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
@@ -38,9 +38,7 @@ public class FloraProvider implements FacetProvider {
         Region3i processRegion = facet.getWorldRegion();
 
         for (Vector3i position : processRegion) {
-            if (!caveFacet.get(position) && caveFacet.get(position.add(Side.BOTTOM.getVector3i()))) {
 
-            }
         }
     }
 }
