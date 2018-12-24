@@ -41,8 +41,7 @@ public class LightingProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         Border3D border = region.getBorderForFacet(LightingFacet.class);
         LightingFacet facet = new LightingFacet(region.getRegion(), border);
-        Region3i processRegion = facet.getWorldRegion();
-        for (Vector3i position : processRegion) {
+        for (Vector3i position : region.getRegion()) {
             facet.setWorld(position, noise.noise(position.x(), position.y(), position.z()) > 0.93);
         }
         region.setRegionFacet(LightingFacet.class, facet);

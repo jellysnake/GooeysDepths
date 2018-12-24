@@ -46,7 +46,7 @@ public class LightingRasterizer implements WorldRasterizer {
         LightingFacet lightingFacet = chunkRegion.getFacet(LightingFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
             if (lightingFacet.getWorld(position)) {
-                switch (caveSystemFacet.get(position)) {
+                switch (caveSystemFacet.getWorld(position)) {
                     case CaveSystemFacet.GRASS:
                         chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
                         break;
