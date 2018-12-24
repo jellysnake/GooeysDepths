@@ -17,9 +17,10 @@ package org.terasology.depths.caveGen.worldGen;
 
 import org.terasology.core.world.generator.facetProviders.FlatSurfaceHeightProvider;
 import org.terasology.depths.caveGen.worldGen.caverSystem.CaveSystemProvider;
+import org.terasology.depths.caveGen.worldGen.caverSystem.StoneProvider;
+import org.terasology.depths.caveGen.worldGen.caverSystem.WorldFillingRasterizer;
 import org.terasology.depths.caveGen.worldGen.flora.FloraProvider;
 import org.terasology.depths.caveGen.worldGen.flora.GrassProvider;
-import org.terasology.depths.caveGen.worldGen.caverSystem.WorldFillingRasterizer;
 import org.terasology.depths.caveGen.worldGen.lighting.LightingProvider;
 import org.terasology.depths.caveGen.worldGen.lighting.LightingRasterizer;
 import org.terasology.engine.SimpleUri;
@@ -47,6 +48,7 @@ public class GooeysDepthsWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new CaveSystemProvider())
                 .addProvider(new GrassProvider())
                 .addProvider(new FloraProvider())
+                .addProvider(new StoneProvider())
                 .addRasterizer(new WorldFillingRasterizer())
 
                 .addProvider(new LightingProvider())

@@ -45,11 +45,16 @@ public class WorldFillingRasterizer implements WorldRasterizer {
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         CaveSystemFacet caveSystemFacet = chunkRegion.getFacet(CaveSystemFacet.class);
+        StoneVeinFacet stoneFacet = chunkRegion.getFacet(StoneVeinFacet.class);
 
-        for (Vector3i position : caveSystemFacet.getWorldRegion()) {
-            switch (caveSystemFacet.get(position)) {
+        for (Vector3i position : chunkRegion.getRegion()) {
+            switch (caveSystemFacet.getWorld(position)) {
                 case CaveSystemFacet.DIRT:
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                    if (stoneFacet.getWorld(position)) {
+                        chunk.setBlock(ChunkMath.calcBlockPos(position), stone);
+                    } else {
+                        chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                    }
                     break;
                 case CaveSystemFacet.STONE:
                     chunk.setBlock(ChunkMath.calcBlockPos(position), stone);
