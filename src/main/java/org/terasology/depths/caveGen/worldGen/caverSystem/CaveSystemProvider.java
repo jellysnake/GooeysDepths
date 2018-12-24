@@ -40,12 +40,11 @@ public class CaveSystemProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         Border3D border = region.getBorderForFacet(CaveSystemFacet.class);
         CaveSystemFacet facet = new CaveSystemFacet(region.getRegion(), border);
-        Region3i processRegion = region.getRegion();
-        for (Vector3i position : processRegion) {
+        for (Vector3i position : region.getRegion()) {
             float value = noise.noise(position.x(), position.y(), position.z());
-            if (value < -0.7) {
+            if (value < -0.9) {
                 facet.setWorld(position, CaveSystemFacet.HARDSTONE);
-            } else if (value < -0.3) {
+            } else if (value < -0.5) {
                 facet.setWorld(position, CaveSystemFacet.STONE);
             } else if (value < 0) {
                 if (noise.noise(position.x(), position.y() + 1, position.z()) >= 0) {
