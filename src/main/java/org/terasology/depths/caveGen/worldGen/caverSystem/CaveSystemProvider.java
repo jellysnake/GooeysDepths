@@ -15,7 +15,6 @@
  */
 package org.terasology.depths.caveGen.worldGen.caverSystem;
 
-import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.utilities.procedural.Noise;
@@ -47,11 +46,7 @@ public class CaveSystemProvider implements FacetProvider {
             } else if (value < -0.5) {
                 facet.setWorld(position, CaveSystemFacet.STONE);
             } else if (value < 0) {
-                if (noise.noise(position.x(), position.y() + 1, position.z()) >= 0) {
-                    facet.setWorld(position, CaveSystemFacet.GRASS);
-                } else {
-                    facet.setWorld(position, CaveSystemFacet.DIRT);
-                }
+                facet.setWorld(position, CaveSystemFacet.DIRT);
             }
         }
         region.setRegionFacet(CaveSystemFacet.class, facet);

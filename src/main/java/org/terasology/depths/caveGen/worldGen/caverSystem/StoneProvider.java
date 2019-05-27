@@ -15,17 +15,15 @@
  */
 package org.terasology.depths.caveGen.worldGen.caverSystem;
 
+import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
 
-@Produces(StoneVeinFacet.class)
 public class StoneProvider implements FacetProvider {
     private Noise noise;
 
@@ -37,11 +35,14 @@ public class StoneProvider implements FacetProvider {
 
     @Override
     public void process(GeneratingRegion region) {
-        Border3D border = region.getBorderForFacet(StoneVeinFacet.class);
-        StoneVeinFacet facet = new StoneVeinFacet(region.getRegion(), border);
-        for (Vector3i position : region.getRegion()) {
-            facet.setWorld(position, noise.noise(position.x(), position.y(), position.z()) < -0.5);
+        CaveSystemFacet caveFacet = region.getRegionFacet(CaveSystemFacet.class);
+
+        Region3i processRegion = region.getRegion();
+        for (Vector3i position : processRegion) {
+            if (noise.noise(position.x(), position.y(), position.z()) < -0.5 /* If there is sufficient probability */
+                    && caveFacet.getWorld(position) == CaveSystemFacet.DIRT) { /* And there is dirt currently */
+                caveFacet.setWorld(position, CaveSystemFacet.STONE); /* Add stone */
+            }
         }
-        region.setRegionFacet(StoneVeinFacet.class, facet);
     }
 }
