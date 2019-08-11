@@ -1,0 +1,4 @@
+{
+    "basedOn": "core:plant",
+    "tile":"BigBrownShroom"
+}

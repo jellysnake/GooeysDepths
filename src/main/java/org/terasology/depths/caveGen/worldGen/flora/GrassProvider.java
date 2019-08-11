@@ -18,9 +18,14 @@ package org.terasology.depths.caveGen.worldGen.flora;
 import org.terasology.depths.caveGen.worldGen.caverSystem.CaveSystemFacet;
 import org.terasology.math.Region3i;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.world.generation.Facet;
+import org.terasology.world.generation.FacetBorder;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
+import org.terasology.world.generation.Updates;
 
+
+@Updates(@Facet(value = CaveSystemFacet.class, border = @FacetBorder(top = 1)))
 public class GrassProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {

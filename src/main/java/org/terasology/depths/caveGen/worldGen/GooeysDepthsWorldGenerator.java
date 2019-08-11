@@ -20,6 +20,7 @@ import org.terasology.depths.caveGen.worldGen.caverSystem.CaveSystemProvider;
 import org.terasology.depths.caveGen.worldGen.caverSystem.StoneProvider;
 import org.terasology.depths.caveGen.worldGen.caverSystem.WorldFillingRasterizer;
 import org.terasology.depths.caveGen.worldGen.flora.FloraProvider;
+import org.terasology.depths.caveGen.worldGen.flora.FloraRasterizer;
 import org.terasology.depths.caveGen.worldGen.flora.GrassProvider;
 import org.terasology.depths.caveGen.worldGen.lighting.LightingProvider;
 import org.terasology.depths.caveGen.worldGen.lighting.LightingRasterizer;
@@ -47,9 +48,11 @@ public class GooeysDepthsWorldGenerator extends BaseFacetedWorldGenerator {
 
                 .addProvider(new CaveSystemProvider())
                 .addProvider(new GrassProvider())
-                .addProvider(new FloraProvider())
                 .addProvider(new StoneProvider())
                 .addRasterizer(new WorldFillingRasterizer())
+
+                .addProvider(new FloraProvider())
+                .addRasterizer(new FloraRasterizer())
 
                 .addProvider(new LightingProvider())
                 .addRasterizer(new LightingRasterizer());

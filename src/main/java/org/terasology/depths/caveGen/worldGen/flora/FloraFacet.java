@@ -15,11 +15,13 @@
  */
 package org.terasology.depths.caveGen.worldGen.flora;
 
+import org.terasology.depths.caveGen.worldGen.BaseByteFacet3D;
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.BaseBooleanFieldFacet3D;
 
-public class FloraFacet extends BaseBooleanFieldFacet3D {
+public class FloraFacet extends BaseByteFacet3D {
+    public static final String[] FLOWERS = {"GooeysDepths:BigBrownShroom", "GooeysDepths:BrownShroom", "GooeysDepths:RedShroom"};
+
     public FloraFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);
     }
